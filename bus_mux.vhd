@@ -19,7 +19,7 @@ PORT(
     MAR_DATA  : in std_logic_vector(16-1 downto 0);
     IR_DATA   : in std_logic_vector(12-1 downto 0);
 
-    MEM_DATA : in std_logic_vector(gDATA_WIDTH-1 downto 0);
+    MEM_DATA : in std_logic_vector(12-1 downto 0);
 
     --   21       20    19   18    17   16    15   14    13    12      11   10    9    8    7        6     5       4      3     2      1    0
     -- CountEn, PCout, Ain, Aout, Bin, Bout, Cin, Cout, Oin, KeybOut, Hin, Hout, Lin, Lout MARin, MARout, MEMin, MEMout, IRin, IRout, JMP, HLT
@@ -66,7 +66,7 @@ BEGIN
         BUS_OUT <= MAR_DATA;
     elsif control_word(4)='1' then
     -- Mem out
-        BUS_OUT(7 downto 0) <= MEM_DATA;
+        BUS_OUT(11 downto 0) <= MEM_DATA;
     elsif control_word(2)='1' then
     -- IR out
         BUS_OUT(11 downto 0) <= IR_DATA;

@@ -31,7 +31,7 @@ ARCHITECTURE description OF boxer1_top IS
         MAR_DATA  : in std_logic_vector(16-1 downto 0);
         IR_DATA   : in std_logic_vector(12-1 downto 0);
 
-        MEM_DATA : in std_logic_vector(gDATA_WIDTH-1 downto 0);
+        MEM_DATA : in std_logic_vector(12-1 downto 0);
 
         control_word : in std_logic_vector(21 downto 0);
         BUS_OUT      : out std_logic_vector(16-1 downto 0);
@@ -99,11 +99,11 @@ ARCHITECTURE description OF boxer1_top IS
     component generic_register IS 
         generic (gDATA_WIDTH : integer);
         PORT(
-            data_in   : IN STD_LOGIC_VECTOR(gDATA_WIDTH DOWNTO 0);
+            data_in   : IN STD_LOGIC_VECTOR(gDATA_WIDTH-1 DOWNTO 0);
             enable  : IN STD_LOGIC; -- load/enable.
             clear : IN STD_LOGIC; -- async. clear.
             clk : IN STD_LOGIC; -- clock.
-            data_out   : OUT STD_LOGIC_VECTOR(gDATA_WIDTH DOWNTO 0) -- output
+            data_out   : OUT STD_LOGIC_VECTOR(gDATA_WIDTH-1 DOWNTO 0) -- output
         );
     END component;
 
@@ -139,7 +139,7 @@ ARCHITECTURE description OF boxer1_top IS
         );
     END component;
 
-    signal mainBus : std_logic_vector(15 downto 0);
+    signal mainBus  : std_logic_vector(15 downto 0);
 
     signal Reg_A_Out : std_logic_vector(gDATA_WIDTH-1 downto 0);
     signal Reg_B_Out : std_logic_vector(gDATA_WIDTH-1 downto 0);
@@ -180,6 +180,9 @@ ARCHITECTURE description OF boxer1_top IS
     signal write_term_en    :std_logic := '0';
 
     signal ring_counter_out :std_logic_vector(3 downto 0);
+
+    signal config_clk       : std_logic;
+    signal component_clk    : std_logic;
 
 
 BEGIN
@@ -360,6 +363,33 @@ BEGIN
         clear     => top_clear,
         clk       => top_clk,
         data_out  => IR_Out
+    );
+
+
+    bus_mux0 : bus_mux 
+    generic map (gDATA_WIDTH => 8)
+    PORT map(
+        Reg_A_DATA => Reg_A_Out,
+        Reg_B_DATA => Reg_B_Out,
+        Reg_C_DATA => Reg_C_Out,
+        Reg_O_DATA => Reg_O_Out,
+        Reg_H_DATA => Reg_H_Out,
+        Reg_L_DATA => Reg_L_Out,
+
+        ALU_DATA        => ALU_Out,
+        KEYBOARD_DATA   => KEYBOARD_Out,
+
+        PC_DATA   => PC_out,
+        MAR_DATA  => MAR_OUT,
+        IR_DATA   => IR_out,
+
+        --Temp this should not be ROM out this should be a MEM out, I should be dealing with that in memory_decoder
+        MEM_DATA => ROM_OUT,
+
+        control_word => control_word,
+        BUS_OUT      => mainBus,
+
+        clk          => top_clk
     );
 
 

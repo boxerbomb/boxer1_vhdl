@@ -18,7 +18,7 @@ port(
 end ram;
 
 architecture arch of ram is
-	type ram_type is array (0 to (2**(gADDRESS_WIDTH) -1)) of std_logic_vector((gDATA_WIDTH - 1) downto 0);
+	type ram_type is array (0 to (integer'(2) ** gADDRESS_WIDTH - 1)) of std_logic_vector((gDATA_WIDTH - 1) downto 0);
 	signal ram: ram_type;
 begin
 

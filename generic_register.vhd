@@ -1,15 +1,15 @@
 library IEEE;
 use IEEE.std_logic_1164.all;
-use ieee.numeric_std.all;
+
 
 ENTITY generic_register IS 
 generic (gDATA_WIDTH : integer);
 PORT(
-    data_in   : IN STD_LOGIC_VECTOR(gDATA_WIDTH-1 DOWNTO 0);
-    enable  : IN STD_LOGIC; -- load/enable.
-    clear : IN STD_LOGIC; -- async. clear.
-    clk : IN STD_LOGIC; -- clock.
-    data_out   : OUT STD_LOGIC_VECTOR(gDATA_WIDTH-1 DOWNTO 0) -- output
+    data_in     : IN STD_LOGIC_VECTOR(gDATA_WIDTH-1 DOWNTO 0);
+    enable      : IN STD_LOGIC; -- load/enable.
+    clear       : IN STD_LOGIC; -- async. clear.
+    clk         : IN STD_LOGIC; -- clock.
+    data_out    : OUT STD_LOGIC_VECTOR(gDATA_WIDTH-1 DOWNTO 0) -- output
 );
 END generic_register;
 
